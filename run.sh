@@ -95,6 +95,7 @@ if [ ! -f "$REPO" ]; then
 else
   echo "Repository '$REPO' already exists. Skipping initialization."
 fi
+fossil user password root "$WEB_PASSWORD" -R "$REPO"
 
 # Run the servers
 filebrowser --database $DATABASE_PATH &
