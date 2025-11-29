@@ -88,8 +88,10 @@ chmod 600 /root/.ssh/gh_mirror_key
 
 mkdir -p /data/fossils
 
-# create the user based on WEB_USERNAME
-useradd -m $WEB_USERNAME
+# create the user based on WEB_USERNAME if it doesn't exist
+if ! id "$WEB_USERNAME" >/dev/null 2>&1; then
+    useradd -m $WEB_USERNAME
+fi
 
 REPO="/data/fossils/admin.fossil"
 LOGIN_GROUP="alllogin"
