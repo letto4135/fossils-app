@@ -106,7 +106,7 @@ fi
 ADMIN_GROUP=$(fossil login-group -R "$REPO" 2>&1)
 if echo "$ADMIN_GROUP" | grep -q "Not currently a part of any login-group"; then
   echo "Creating login group '$LOGIN_GROUP' for admin repo"
-  fossil login-group -R "$REPO" "$LOGIN_GROUP"
+  fossil login-group -R "$REPO" --name "$LOGIN_GROUP"
 else
   echo "Login group '$LOGIN_GROUP' already exists for admin repo. Skipping creation."
 fi
