@@ -103,7 +103,15 @@ else
   echo "Repository '$ADMIN_REPO' already exists. Skipping initialization."
 fi
 
-fossil login-group join --name "$LOGIN_GROUP"
+INITIALIZED=false
+
+# check if the ADMIN_REPO is part of a login group
+ADMIN_LOGIN_GROUP=$(fossil login-group -R "$ADMIN_REPO")
+# Output will say something like 'Not currently part of any login-group' if it's not part of a login group
+if [ "$ADMIN_LOGIN_GROUP" != "Not currently part of any login-group" ]; then
+  echo "Repository '$ADMIN_REPO' is already part of a login group. Skipping initialization."
+  INITIALIZED=true
+fi
 
 # loop over repos in /data/fossils and set the password to WEB_PASSWORD and make sure WEB_USERNAME exists as a user
 for REPO in /data/fossils/*.fossil; do
@@ -117,9 +125,15 @@ for REPO in /data/fossils/*.fossil; do
   fi
 
   fossil user password $WEB_USERNAME "$WEB_PASSWORD" -R "$REPO"
-  
-  echo "Joining $REPO to login group $LOGIN_GROUP"
-  fossil login-group join -R "$REPO" "$ADMIN_REPO"
+
+  if [ "$INITIALIZED" = false ]; then
+    echo "Joining $REPO to login group $LOGIN_GROUP"
+    fossil login-group join -R "$REPO" --name "$LOGIN_GROUP" "$ADMIN_REPO"
+    INITIALIZED=true
+  else
+    echo "Joining repo to existing login group"
+    fossil login-group join -R "$REPO" "$ADMIN_REPO"
+  fi
 done
 
 # Run the servers
