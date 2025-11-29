@@ -86,5 +86,5 @@ echo $SSH_PRIVATE_KEY > /root/.ssh/gh_mirror_key
 chmod 600 /root/.ssh/gh_mirror_key
 
 # Run the servers
-fossil server --repolist --https /fossils/repos --port 8080 &
-/filebrowser --database $DATABASE_PATH 2>&1
+/filebrowser --database $DATABASE_PATH 2>&1 &
+fossil server --repolist --https /fossils/repos --port 8080
