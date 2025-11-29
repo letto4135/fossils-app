@@ -86,8 +86,14 @@ chmod 600 /root/.ssh/config
 echo $SSH_PRIVATE_KEY > /root/.ssh/gh_mirror_key
 chmod 600 /root/.ssh/gh_mirror_key
 
-mkdir /data/fossils
-fossil init /data/fossils/admin.fossil
+mkdir -p /data/fossils
+
+REPO="/data/fossils/admin.fossil"
+if [ ! -f "$REPO" ]; then
+  fossil init "$REPO"
+else
+  echo "Repository '$REPO' already exists. Skipping initialization."
+fi
 
 # Run the servers
 filebrowser --database $DATABASE_PATH &
