@@ -13,8 +13,7 @@ RUN apk add git openssh && \
     make && \
     cp fossil /usr/local/bin && \
     cd .. && \
-    rm -rf fossil-src fossil-src.tar.gz && \
-    apk del curl gcc make tcl musl-dev zlib-dev
+    rm -rf fossil-src fossil-src.tar.gz
 
 EXPOSE 8080
 EXPOSE 8081
