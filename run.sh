@@ -89,19 +89,19 @@ chmod 600 /root/.ssh/gh_mirror_key
 mkdir -p /data/fossils
 
 # create the user based on WEB_USERNAME if it doesn't exist
-if ! id "$WEB_USERNAME" >/dev/null 2>&1; then
-    # add user with root permissions
-    useradd -m -s /bin/sh $WEB_USERNAME
+if id "$WEB_USERNAME" >/dev/null 2>&1; then
+    echo "$WEB_USERNAME exists"
     usermod -aG root $WEB_USERNAME
 else
-    # give existing user root permissions
+    # add user with root permissions
+    useradd -m -s /bin/sh $WEB_USERNAME
     usermod -aG root $WEB_USERNAME
 fi
 
 ADMIN_REPO="/data/fossils/admin.fossil"
 LOGIN_GROUP="alllogin"
 if [ ! -f "$ADMIN_REPO" ]; then
-  echo "Creating new $ADMIN_REPOREPO"
+  echo "Creating new $ADMIN_REPO"
   fossil init "$ADMIN_REPO" --user $WEB_USERNAME
   fossil user password $WEB_USERNAME "$WEB_PASSWORD" -R "$ADMIN_REPO"
 else
