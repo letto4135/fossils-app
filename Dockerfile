@@ -17,6 +17,7 @@ RUN apk add git openssh && \
     apk del curl gcc make tcl musl-dev zlib-dev
 
 EXPOSE 8080
+EXPOSE 8081
 COPY --chmod=755 run.sh ./
 
 ENTRYPOINT ["/bin/sh"]
