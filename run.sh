@@ -95,6 +95,8 @@ else
   echo "Repository '$REPO' already exists. Skipping initialization."
 fi
 
+fossil user default admin
+
 # Run the servers
 filebrowser --database $DATABASE_PATH &
 fossil server --repolist --https /data/fossils --port 8080
