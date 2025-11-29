@@ -108,6 +108,8 @@ else
   echo "Repository '$ADMIN_REPO' already exists. Skipping initialization."
 fi
 
+fossil login-group join "$ADMIN_REPO"
+
 INITIALIZED=false
 
 # check if the ADMIN_REPO is part of a login group
