@@ -51,20 +51,21 @@ if [ -f "$DATABASE_PATH" ]; then
     fi
 else
     echo "first start, creating database"
-    /filebrowser config init --database $DATABASE_PATH > /dev/null 2>&1
+    /filebrowser config init --database $DATABASE_PATH
 
     echo "setting configurations"
-    /filebrowser config set --address "0.0.0.0" --database $DATABASE_PATH > /dev/null 2>&1
+    /filebrowser config set --address "0.0.0.0" --database $DATABASE_PATH
 
-    /filebrowser users add $WEB_USERNAME $WEB_PASSWORD --database $DATABASE_PATH > /dev/null 2>&1
+    echo "adding user"
+    /filebrowser users add $WEB_USERNAME $WEB_PASSWORD --database $DATABASE_PATH
 fi
 
 echo $WEB_USERNAME > $FILEBROWSER_USERNAME_PATH
 
-/filebrowser users update $WEB_USERNAME --password $WEB_PASSWORD --database $DATABASE_PATH > /dev/null 2>&1
+/filebrowser users update $WEB_USERNAME --password $WEB_PASSWORD --database $DATABASE_PATH
 
 /filebrowser config set --port 8081 --database $DATABASE_PATH > /dev/null 2>&1
-/filebrowser config set --root $FILEBROWSER_STORAGE_PATH --database $DATABASE_PATH > /dev/null 2>&1
+/filebrowser config set --root $FILEBROWSER_STORAGE_PATH --database $DATABASE_PATH
 
 /filebrowser version
 
@@ -86,5 +87,5 @@ echo $SSH_PRIVATE_KEY > /root/.ssh/gh_mirror_key
 chmod 600 /root/.ssh/gh_mirror_key
 
 # Run the servers
-/filebrowser --database $DATABASE_PATH 2>&1
+/filebrowser --database $DATABASE_PATH
 # fossil server --repolist --https /fossils/repos --port 8080
