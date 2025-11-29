@@ -88,14 +88,14 @@ chmod 600 /root/.ssh/gh_mirror_key
 
 mkdir -p /data/fossils
 
+fossil user default admin
+
 REPO="/data/fossils/admin.fossil"
 if [ ! -f "$REPO" ]; then
   fossil init "$REPO"
 else
   echo "Repository '$REPO' already exists. Skipping initialization."
 fi
-
-fossil user default admin
 
 # Run the servers
 filebrowser --database $DATABASE_PATH &
