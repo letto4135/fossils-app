@@ -15,8 +15,6 @@ RUN apk add git openssh && \
     cd .. && \
     rm -rf fossil-src fossil-src.tar.gz
 
-VOLUME /data
-
 COPY --chmod=755 run.sh ./
 
 ENTRYPOINT ["/bin/sh"]
