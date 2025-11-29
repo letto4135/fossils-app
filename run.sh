@@ -108,9 +108,6 @@ else
   echo "Repository '$ADMIN_REPO' already exists. Skipping initialization."
 fi
 
-fossil login-group join --name "$LOGIN_GROUP" "$ADMIN_REPO"
-
-
 INITIALIZED=false
 
 # check if the ADMIN_REPO is part of a login group
@@ -138,7 +135,7 @@ for REPO in /data/fossils/*.fossil; do
   echo "$REPO"
   if [ "$INITIALIZED" = false ]; then
     echo "Joining $REPO to new login group $LOGIN_GROUP"
-    fossil login-group join -R "$REPO" --name "$LOGIN_GROUP" "$ADMIN_REPO"
+    fossil login-group join -R $REPO --name $LOGIN_GROUP $ADMIN_REPO
     echo "Login group of admin repo $(fossil login-group -R "$ADMIN_REPO")"
     echo "Login group of repo $(fossil login-group -R "$REPO")"
     INITIALIZED=true
