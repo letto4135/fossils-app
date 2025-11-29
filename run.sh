@@ -67,7 +67,7 @@ filebrowser users update $WEB_USERNAME --password $WEB_PASSWORD --database $DATA
 filebrowser config set --port 8081 --database $DATABASE_PATH > /dev/null 2>&1
 filebrowser config set --root $FILEBROWSER_STORAGE_PATH --database $DATABASE_PATH
 
-/filebrowser version
+filebrowser version
 
 # Create the .ssh directory and set permissions
 mkdir -p /root/.ssh
