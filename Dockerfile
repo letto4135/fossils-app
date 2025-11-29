@@ -1,0 +1,24 @@
+# Use a recent Alpine for compatibility
+FROM alpine:latest
+
+# Install build dependencies and build Fossil from trunk
+RUN apk update && \
+    apk upgrade && \
+    apk add git openssh && \
+    apk add --no-cache curl gcc make tcl musl-dev openssl-dev zlib-dev openssl-libs-static zlib-static && \
+    curl "https://fossil-scm.org/home/tarball/fossil-src.tar.gz?name=fossil-src&uuid=trunk" -o fossil-src.tar.gz && \
+    tar xf fossil-src.tar.gz && \
+    cd fossil-src && \
+    ./configure --static --disable-fusefs --with-th1-docs --with-th1-hooks && \
+    make && \
+    cp fossil /usr/local/bin && \
+    cd .. && \
+    rm -rf fossil-src fossil-src.tar.gz && \
+    apk del curl gcc make tcl musl-dev zlib-dev
+
+EXPOSE 8080
+VOLUME /fossils
+COPY run.sh /run.sh
+RUN chmod +x /run.sh
+# Run the server on all interfaces, serving the mounted directory
+CMD ["/run.sh"]
