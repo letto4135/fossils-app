@@ -105,6 +105,8 @@ ADMIN_GROUP=$(fossil login-group -R "$REPO" 2>&1)
 if echo "$ADMIN_GROUP" | grep -q "Not currently a part of any login-group"; then
   echo "Creating login group '$LOGIN_GROUP' for admin repo"
   fossil login-group -R "$REPO" "$LOGIN_GROUP"
+else
+  echo "Login group '$LOGIN_GROUP' already exists for admin repo. Skipping creation."
 fi
 
 # loop over repos in /data/fossils and set the password to WEB_PASSWORD and make sure WEB_USERNAME exists as a user
@@ -121,7 +123,7 @@ for REPOS in /data/fossils/*.fossil; do
   fossil user password $WEB_USERNAME "$WEB_PASSWORD" -R "$REPOS"
   
   echo "Joining $REPOS to login group $LOGIN_GROUP"
-  fossil login-group join -R "$REPO" --name "$LOGIN_GROUP" "$REPOS"
+  fossil login-group join -R "$REPOS" --name "$LOGIN_GROUP" "$REPO"
 done
 
 # Run the servers
