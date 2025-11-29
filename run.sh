@@ -63,7 +63,7 @@ echo $WEB_USERNAME > $FILEBROWSER_USERNAME_PATH
 
 /filebrowser users update $WEB_USERNAME --password $WEB_PASSWORD --database $DATABASE_PATH > /dev/null 2>&1
 
-/filebrowser config set --port $PORT --database $DATABASE_PATH > /dev/null 2>&1
+/filebrowser config set --port 8081 --database $DATABASE_PATH > /dev/null 2>&1
 /filebrowser config set --root $FILEBROWSER_STORAGE_PATH --database $DATABASE_PATH > /dev/null 2>&1
 
 /filebrowser version
@@ -86,5 +86,5 @@ echo $SSH_PRIVATE_KEY > /root/.ssh/gh_mirror_key
 chmod 600 /root/.ssh/gh_mirror_key
 
 # Run the servers
-/filebrowser --database $DATABASE_PATH 2>&1 &
-fossil server --repolist --https /fossils/repos --port 8080
+/filebrowser --database $DATABASE_PATH 2>&1
+# fossil server --repolist --https /fossils/repos --port 8080
