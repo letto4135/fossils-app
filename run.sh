@@ -88,4 +88,5 @@ chmod 600 /root/.ssh/gh_mirror_key
 
 # Run the servers
 filebrowser --database $DATABASE_PATH &
-fossil server --repolist --https /data/fossils/repos --port 8080
+fossil init /data/fossils/admin.fossil
+fossil server --repolist --https /data/fossils --port 8080
