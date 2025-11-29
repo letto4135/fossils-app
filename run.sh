@@ -108,7 +108,7 @@ else
   echo "Repository '$ADMIN_REPO' already exists. Skipping initialization."
 fi
 
-fossil login-group join "$ADMIN_REPO"
+fossil login-group join --name "$LOGIN_GROUP" "$ADMIN_REPO"
 
 INITIALIZED=false
 
