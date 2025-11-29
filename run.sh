@@ -110,6 +110,7 @@ fi
 
 fossil login-group join --name "$LOGIN_GROUP" "$ADMIN_REPO"
 
+
 INITIALIZED=false
 
 # check if the ADMIN_REPO is part of a login group
