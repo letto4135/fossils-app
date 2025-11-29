@@ -90,8 +90,8 @@ mkdir -p /data/fossils
 
 REPO="/data/fossils/admin.fossil"
 if [ ! -f "$REPO" ]; then
-  fossil init "$REPO"
-  fossil user default admin -R "$REPO"
+  echo "Creating new $REPO"
+  fossil init "$REPO" --user admin
 else
   echo "Repository '$REPO' already exists. Skipping initialization."
 fi
