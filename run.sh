@@ -118,6 +118,7 @@ for REPOS in /data/fossils/*.fossil; do
   
   echo "Joining $REPOS to login group $LOGIN_GROUP"
   fossil login-group join -R "$REPOS" --name "$LOGIN_GROUP" "$REPO"
+  fossil configuration pull user -R "$REPOS" "$REPO"
 done
 
 # Run the servers
