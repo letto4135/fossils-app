@@ -127,12 +127,10 @@ for REPO in /data/fossils/*.fossil; do
   fi
 
   fossil user password $WEB_USERNAME "$WEB_PASSWORD" -R "$REPO"
-
+  echo "$REPO"
   if [ "$INITIALIZED" = false ]; then
     echo "Joining $REPO to new login group $LOGIN_GROUP"
-    OUTPUT=$(fossil login-group join -R "$ADMIN_REPO" --name "$LOGIN_GROUP" "$REPO" 2>&1)
-    echo "Command output: $OUTPUT"
-    echo "New login group created"
+    fossil login-group join -R "$REPO" --name "$LOGIN_GROUP" "$ADMIN_REPO"
     echo "Login group of admin repo $(fossil login-group -R "$ADMIN_REPO")"
     echo "Login group of repo $(fossil login-group -R "$REPO")"
     INITIALIZED=true
