@@ -86,7 +86,9 @@ chmod 600 /root/.ssh/config
 echo $SSH_PRIVATE_KEY > /root/.ssh/gh_mirror_key
 chmod 600 /root/.ssh/gh_mirror_key
 
+mkdir /data/fossils
+fossil init /data/fossils/admin.fossil
+
 # Run the servers
 filebrowser --database $DATABASE_PATH &
-fossil init /data/fossils/admin.fossil
 fossil server --repolist --https /data/fossils --port 8080
