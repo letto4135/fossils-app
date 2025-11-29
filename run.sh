@@ -92,10 +92,10 @@ REPO="/data/fossils/admin.fossil"
 if [ ! -f "$REPO" ]; then
   echo "Creating new $REPO"
   fossil init "$REPO" --user root
+  fossil user password root "$WEB_PASSWORD" -R "$REPO"
 else
   echo "Repository '$REPO' already exists. Skipping initialization."
 fi
-fossil user password root "$WEB_PASSWORD" -R "$REPO"
 
 # Run the servers
 filebrowser --database $DATABASE_PATH &
