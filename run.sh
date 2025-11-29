@@ -89,6 +89,7 @@ chmod 600 /root/.ssh/gh_mirror_key
 mkdir -p /data/fossils
 
 # create the user based on WEB_USERNAME if it doesn't exist
+echo "id output: $(id $WEB_USERNAME)"
 if id "$WEB_USERNAME" >/dev/null 2>&1; then
     echo "$WEB_USERNAME exists"
     usermod -aG root $WEB_USERNAME
@@ -103,11 +104,10 @@ LOGIN_GROUP="alllogin"
 if [ ! -f "$ADMIN_REPO" ]; then
   echo "Creating new $ADMIN_REPO"
   chown $WEB_USERNAME:$WEB_USERNAME /data/fossils
-  echo "Word text format"
-  fossil init "$ADMIN_REPO" --user "$WEB_USERNAME"
-  echo "Word text format 2"
-  fossil user password "$WEB_USERNAME" "$WEB_PASSWORD" -R "$ADMIN_REPO"
-  echo "Word text format 3"
+  OUTPUT=$(fossil init "$ADMIN_REPO" --user "$WEB_USERNAME")
+  echo "OUTPUT: $OUTPUT"
+  OUTPUT=$(fossil user password "$WEB_USERNAME" "$WEB_PASSWORD" -R "$ADMIN_REPO")
+  echo "OUTPUT2: $OUTPUT"
 else
   echo "Repository '$ADMIN_REPO' already exists. Skipping initialization."
 fi
