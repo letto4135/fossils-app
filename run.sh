@@ -103,7 +103,7 @@ else
   echo "Repository '$ADMIN_REPO' already exists. Skipping initialization."
 fi
 
-fossil login-group join -R "$ADMIN_REPO" --name "$LOGIN_GROUP" "$ADMIN_REPO"
+fossil login-group join --name "$LOGIN_GROUP" "$ADMIN_REPO"
 
 # loop over repos in /data/fossils and set the password to WEB_PASSWORD and make sure WEB_USERNAME exists as a user
 for REPO in /data/fossils/*.fossil; do
