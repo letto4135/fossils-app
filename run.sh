@@ -109,7 +109,8 @@ INITIALIZED=false
 ADMIN_LOGIN_GROUP=$(fossil login-group -R "$ADMIN_REPO")
 echo "ADMIN_LOGIN_GROUP: $ADMIN_LOGIN_GROUP"
 # Output will say something like 'Not currently a part of any login-group' if it's not part of a login group
-if [ "$ADMIN_LOGIN_GROUP" != "Not currently a part of any login-group" ]; then
+# if not starts with Not currently
+if [[ ! "$ADMIN_LOGIN_GROUP" =~ ^"Not currently" ]]; then
   echo "Repository '$ADMIN_REPO' is already part of a login group. Skipping initialization."
   INITIALIZED=true
 fi
