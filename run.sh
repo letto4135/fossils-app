@@ -90,7 +90,12 @@ mkdir -p /data/fossils
 
 # create the user based on WEB_USERNAME if it doesn't exist
 if ! id "$WEB_USERNAME" >/dev/null 2>&1; then
-    useradd -m $WEB_USERNAME
+    # add user with root permissions
+    useradd -m -s /bin/sh $WEB_USERNAME
+    usermod -aG root $WEB_USERNAME
+else
+    # give existing user root permissions
+    usermod -aG root $WEB_USERNAME
 fi
 
 ADMIN_REPO="/data/fossils/admin.fossil"
