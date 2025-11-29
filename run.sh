@@ -93,32 +93,33 @@ if ! id "$WEB_USERNAME" >/dev/null 2>&1; then
     useradd -m $WEB_USERNAME
 fi
 
-REPO="/data/fossils/admin.fossil"
+ADMIN_REPO="/data/fossils/admin.fossil"
 LOGIN_GROUP="alllogin"
-if [ ! -f "$REPO" ]; then
-  echo "Creating new $REPO"
-  fossil init "$REPO" --user $WEB_USERNAME
-  fossil user password $WEB_USERNAME "$WEB_PASSWORD" -R "$REPO"
+if [ ! -f "$ADMIN_REPO" ]; then
+  echo "Creating new $ADMIN_REPOREPO"
+  fossil init "$ADMIN_REPO" --user $WEB_USERNAME
+  fossil user password $WEB_USERNAME "$WEB_PASSWORD" -R "$ADMIN_REPO"
 else
-  echo "Repository '$REPO' already exists. Skipping initialization."
+  echo "Repository '$ADMIN_REPO' already exists. Skipping initialization."
 fi
 
+fossil login-group join -R "$ADMIN_REPO" --name "$LOGIN_GROUP" "$ADMIN_REPO"
+
 # loop over repos in /data/fossils and set the password to WEB_PASSWORD and make sure WEB_USERNAME exists as a user
-for REPOS in /data/fossils/*.fossil; do
-  if [ ! -f "$REPOS" ]; then
-    echo "Repository '$REPOS' does not exist. Skipping."
+for REPO in /data/fossils/*.fossil; do
+  if [ ! -f "$REPO" ]; then
+    echo "Repository '$REPO' does not exist. Skipping."
     continue
   fi
 
-  if [ "$REPOS" == "$REPO" ]; then
+  if [ "$REPO" == "$ADMIN_REPO" ]; then
     continue
   fi
 
-  fossil user password $WEB_USERNAME "$WEB_PASSWORD" -R "$REPOS"
+  fossil user password $WEB_USERNAME "$WEB_PASSWORD" -R "$REPO"
   
-  echo "Joining $REPOS to login group $LOGIN_GROUP"
-  fossil login-group join -R "$REPOS" --name "$LOGIN_GROUP" "$REPO"
-  fossil configuration pull user -R "$REPOS" "$REPO" --user $WEB_USERNAME
+  echo "Joining $REPO to login group $LOGIN_GROUP"
+  fossil login-group join -R "$REPO" "$ADMIN_REPO"
 done
 
 # Run the servers
