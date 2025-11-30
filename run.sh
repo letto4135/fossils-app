@@ -119,6 +119,8 @@ for REPO in /data/fossils/*.fossil; do
     continue
   fi
 
+  chmod 777 "$REPO"
+
 #   fossil login-group leave -R "$REPO"
 #   fossil sqlite3 -R "$REPO" "DELETE FROM config WHERE name LIKE 'login-group%';"
 #   fossil sqlite3 -R "$REPO" "DELETE FROM config WHERE name LIKE 'peer-%';"
