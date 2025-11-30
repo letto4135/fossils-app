@@ -138,9 +138,11 @@ for REPO in /data/fossils/*.fossil; do
     echo "Joining $REPO to new login group $LOGIN_GROUP"
     fossil login-group join --name "$LOGIN_GROUP" -R "$REPO_NAME" "$ADMIN_REPO_NAME"
     INITIALIZED=true
+    ADMIN_REPO_NAME=$REPO_NAME
   else
     echo "Joining repo to existing login group"
     fossil login-group join -R "$REPO_NAME" "$ADMIN_REPO_NAME"
+    ADMIN_REPO_NAME=$REPO_NAME
   fi
 done
 
