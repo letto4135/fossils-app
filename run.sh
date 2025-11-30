@@ -111,8 +111,8 @@ echo "ADMIN_LOGIN_GROUP: $ADMIN_LOGIN_GROUP"
 # Output will say something like 'Not currently a part of any login-group' if it's not part of a login group
 # if not starts with Not currently
 if [[ ! "$ADMIN_LOGIN_GROUP" =~ ^"Not currently" ]]; then
-  echo "Repository '$ADMIN_REPO' is already part of a login group. Skipping initialization."
-  INITIALIZED=true
+  echo "Repository '$ADMIN_REPO' is already part of a login group. Leaving to remake."
+  fossil login-group leave -R "$ADMIN_REPO"
 fi
 
 # loop over repos in /data/fossils and set the password to WEB_PASSWORD and make sure WEB_USERNAME exists as a user
@@ -123,7 +123,6 @@ for REPO in /data/fossils/*.fossil; do
   fi
 
   if [ "$REPO" == "$ADMIN_REPO" ]; then
-    # fossil login-group leave -R "$REPO"
     continue
   fi
 
@@ -142,7 +141,7 @@ for REPO in /data/fossils/*.fossil; do
   fi
 done
 
-# echo "Login group of admin repo $(fossil login-group -R "$ADMIN_REPO")"
+echo "Login group of admin repo $(fossil login-group -R "$ADMIN_REPO")"
 
 # Run the servers
 # if SERVER_TYPE has a value
