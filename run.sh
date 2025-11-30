@@ -141,7 +141,7 @@ for REPO in /data/fossils/*.fossil; do
   fi
 done
 
-echo "Login group of admin repo $(fossil login-group -R "$ADMIN_REPO")"
+# echo "Login group of admin repo $(fossil login-group -R "$ADMIN_REPO")"
 
 # Run the servers
 # if SERVER_TYPE has a value
