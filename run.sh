@@ -130,9 +130,9 @@ for REPO in /data/fossils/*.fossil; do
     continue
   fi
 
-  fossil login-group leave -R "$REPO"
-  fossil sqlite3 -R "$REPO" "DELETE FROM config WHERE name LIKE 'login-group%';"
-  fossil sqlite3 -R "$REPO" "DELETE FROM config WHERE name LIKE 'peer-%';"
+#   fossil login-group leave -R "$REPO"
+#   fossil sqlite3 -R "$REPO" "DELETE FROM config WHERE name LIKE 'login-group%';"
+#   fossil sqlite3 -R "$REPO" "DELETE FROM config WHERE name LIKE 'peer-%';"
 
 
   REPO_NAME=$(basename "$REPO")
@@ -140,15 +140,15 @@ for REPO in /data/fossils/*.fossil; do
   echo "$REPO"
   if [ "$INITIALIZED" = false ]; then
     echo "Joining $REPO to new login group $LOGIN_GROUP"
-    # fossil login-group join --name "$LOGIN_GROUP" -R "$REPO_NAME" "$ADMIN_REPO_NAME"
+    fossil login-group join --name "$LOGIN_GROUP" -R "$REPO_NAME" "$ADMIN_REPO_NAME"
     INITIALIZED=true
   else
     echo "Joining repo to existing login group"
-    # fossil login-group join -R "$REPO_NAME" "$ADMIN_REPO_NAME"
+    fossil login-group join -R "$REPO_NAME" "$ADMIN_REPO_NAME"
   fi
 done
 
-echo "Login group of admin repo $(fossil login-group -R "$ADMIN_REPO")"
+echo ":::::::::::Login group of admin repo:::::::::::\n\n\n $(fossil login-group -R "$ADMIN_REPO")"
 
 # Run the servers
 # if SERVER_TYPE has a value
