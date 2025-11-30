@@ -28,15 +28,7 @@ DATABASE_PATH=$FILEBROWSER_DATA_PATH/filebrowser.db
 
 FILEBROWSER_USERNAME_PATH=$FILEBROWSER_DATA_PATH/username
 
-if [ "$USE_VOLUME_ROOT" == "1" ]; then
-    echo "using volume root as storage location"
-    FILEBROWSER_STORAGE_PATH=$RAILWAY_VOLUME_MOUNT_PATH
-else
-    FILEBROWSER_STORAGE_PATH=$RAILWAY_VOLUME_MOUNT_PATH/storage
-    if [ ! -d $FILEBROWSER_STORAGE_PATH ]; then
-        mkdir $FILEBROWSER_STORAGE_PATH
-    fi
-fi
+FILEBROWSER_STORAGE_PATH=$RAILWAY_VOLUME_MOUNT_PATH
 
 if [ -f "$DATABASE_PATH" ]; then
     if [ -f "$FILEBROWSER_USERNAME_PATH" ]; then
@@ -139,17 +131,34 @@ for REPO in /data/fossils/*.fossil; do
   echo "$REPO"
   if [ "$INITIALIZED" = false ]; then
     echo "Joining $REPO to new login group $LOGIN_GROUP"
-    fossil login-group join --name "$LOGIN_GROUP" -R "$REPO" "/$ADMIN_REPO_NAME"
+    fossil login-group join --name "$LOGIN_GROUP" -R "$REPO" "$ADMIN_REPO"
     echo "Login group of admin repo $(fossil login-group -R "$ADMIN_REPO")"
     echo "Login group of repo $(fossil login-group -R "$REPO")"
     INITIALIZED=true
   else
     echo "Joining repo to existing login group"
-    fossil login-group join -R "$REPO" "/$ADMIN_REPO_NAME"
+    fossil login-group join -R "$REPO" "$ADMIN_REPO"
     echo "Login group of repo after join: $(fossil login-group -R "$REPO")"
   fi
 done
 
 # Run the servers
-filebrowser --database $DATABASE_PATH &
-fossil server --repolist --https /data/fossils --port 8080
+# if SERVER_TYPE has a value
+if [ -z "SERVER_TYPE" ]; then
+    if [ "$SERVER_TYPE" == 0 ]; then
+        filebrowser --database $DATABASE_PATH &
+        fossil server --repolist --https /data/fossils --port 8080
+    fi
+
+    if [ "$SERVER_TYPE" == 1 ]; then
+        fossil server --repolist --https /data/fossils --port 8080
+    fi
+
+    if [ "$SERVER_TYPE" == 2 ]; then
+        filebrowser --database $DATABASE_PATH
+    fi
+else
+    echo "SERVER_TYPE is not set, defaulting to 0"
+    filebrowser --database $DATABASE_PATH &
+    fossil server --repolist --https /data/fossils --port 8080
+fi
