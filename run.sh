@@ -103,7 +103,8 @@ ADMIN_REPO="/data/fossils/admin.fossil"
 LOGIN_GROUP="alllogin"
 if [ ! -f "$ADMIN_REPO" ]; then
   echo "Creating new $ADMIN_REPO"
-  fossil init "$ADMIN_REPO" --user "$WEB_USERNAME"
+  fossil user default "$WEB_USERNAME"
+  fossil init "$ADMIN_REPO"
   fossil user password "$WEB_USERNAME" "$WEB_PASSWORD" -R "$ADMIN_REPO"
 else
   echo "Repository '$ADMIN_REPO' already exists. Skipping initialization."
