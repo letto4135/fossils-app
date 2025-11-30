@@ -133,16 +133,15 @@ for REPO in /data/fossils/*.fossil; do
   echo "$REPO"
   if [ "$INITIALIZED" = false ]; then
     echo "Joining $REPO to new login group $LOGIN_GROUP"
-    fossil login-group join --name "$LOGIN_GROUP" -R "$ADMIN_REPO" "$REPO"
-    echo "Login group of admin repo $(fossil login-group -R "$ADMIN_REPO")"
-    echo "Login group of repo $(fossil login-group -R "$REPO")"
+    fossil login-group join --name "$LOGIN_GROUP" -R "$REPO" "$ADMIN_REPO"
     INITIALIZED=true
   else
     echo "Joining repo to existing login group"
-    fossil login-group join -R "$ADMIN_REPO" "$REPO"
-    echo "Login group of repo after join: $(fossil login-group -R "$REPO")"
+    fossil login-group join -R "$REPO" "$ADMIN_REPO"
   fi
 done
+
+echo "Login group of admin repo $(fossil login-group -R "$ADMIN_REPO")"
 
 # Run the servers
 # if SERVER_TYPE has a value
