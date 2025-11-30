@@ -100,8 +100,8 @@ else
 fi
 
 chown -R $WEB_USERNAME:$WEB_USERNAME /data/fossils
-
-ADMIN_REPO="/data/fossils/admin.fossil"
+ADMIN_REPO_NAME="admin.fossil"
+ADMIN_REPO="/data/fossils/$ADMIN_REPO_NAME"
 LOGIN_GROUP="alllogin"
 if [ ! -f "$ADMIN_REPO" ]; then
   echo "Creating new $ADMIN_REPO"
@@ -144,7 +144,7 @@ for REPO in /data/fossils/*.fossil; do
     INITIALIZED=true
   else
     echo "Joining repo to existing login group"
-    fossil login-group join -R "$REPO" "$ADMIN_REPO"
+    fossil login-group join -R "$REPO" "$ADMIN_REPO_NAME"
     echo "Login group of repo after join: $(fossil login-group -R "$REPO")"
   fi
 done
