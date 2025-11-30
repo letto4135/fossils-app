@@ -94,7 +94,7 @@ fi
 chown -R $WEB_USERNAME:$WEB_USERNAME /data/fossils
 ADMIN_REPO_NAME="admin.fossil"
 ADMIN_REPO="/data/fossils/$ADMIN_REPO_NAME"
-LOGIN_GROUP="alllogin"
+LOGIN_GROUP="G"
 if [ ! -f "$ADMIN_REPO" ]; then
   echo "Creating new $ADMIN_REPO"
   fossil init --admin-user "$WEB_USERNAME" "$ADMIN_REPO"
