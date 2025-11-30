@@ -87,7 +87,6 @@ echo $SSH_PRIVATE_KEY > /root/.ssh/gh_mirror_key
 chmod 600 /root/.ssh/gh_mirror_key
 
 mkdir -p /data/fossils
-chown -R $WEB_USERNAME:$WEB_USERNAME /data/fossils
 
 # create the user based on WEB_USERNAME if it doesn't exist
 echo "id output: $(id $WEB_USERNAME)"
@@ -99,6 +98,8 @@ else
     useradd -m -s /bin/sh $WEB_USERNAME
     usermod -aG root $WEB_USERNAME
 fi
+
+chown -R $WEB_USERNAME:$WEB_USERNAME /data/fossils
 
 ADMIN_REPO="/data/fossils/admin.fossil"
 LOGIN_GROUP="alllogin"
