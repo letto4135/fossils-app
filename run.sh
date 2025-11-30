@@ -126,18 +126,18 @@ for REPO in /data/fossils/*.fossil; do
     continue
   fi
 
-#   fossil login-group leave -R "$REPO"
+  fossil login-group leave -R "$REPO"
 
   REPO_NAME=$(basename "$REPO")
   fossil user password $WEB_USERNAME "$WEB_PASSWORD" -R "$REPO"
   echo "$REPO"
   if [ "$INITIALIZED" = false ]; then
     echo "Joining $REPO to new login group $LOGIN_GROUP"
-    fossil login-group join --name "$LOGIN_GROUP" -R "$REPO" "$ADMIN_REPO"
+    fossil login-group join --name "$LOGIN_GROUP" -R "$REPO" "./$ADMIN_REPO_NAME"
     INITIALIZED=true
   else
     echo "Joining repo to existing login group"
-    fossil login-group join -R "$REPO" "$ADMIN_REPO"
+    fossil login-group join -R "$REPO" "./$ADMIN_REPO_NAME"
   fi
 done
 
