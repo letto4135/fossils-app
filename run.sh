@@ -113,6 +113,8 @@ echo "ADMIN_LOGIN_GROUP: $ADMIN_LOGIN_GROUP"
 if [[ ! "$ADMIN_LOGIN_GROUP" =~ ^"Not currently" ]]; then
   echo "Repository '$ADMIN_REPO' is already part of a login group. Leaving to remake."
   fossil login-group leave -R "$ADMIN_REPO"
+  fossil sqlite3 -R "$ADMIN_REPO" "DELETE FROM config WHERE name LIKE 'login-group%';"
+  fossil sqlite3 -R "$ADMIN_REPO" "DELETE FROM config WHERE name LIKE 'peer-%';"
 fi
 
 # loop over repos in /data/fossils and set the password to WEB_PASSWORD and make sure WEB_USERNAME exists as a user
