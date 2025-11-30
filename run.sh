@@ -100,7 +100,8 @@ if [ ! -f "$ADMIN_REPO" ]; then
   fossil init --admin-user "$WEB_USERNAME" "$ADMIN_REPO"
   fossil user password "$WEB_USERNAME" "$WEB_PASSWORD" -R "$ADMIN_REPO"
 else
-  echo "Repository '$ADMIN_REPO' already exists. Skipping initialization."
+  echo "Repository '$ADMIN_REPO' already exists. Making sure password is correct, skipping initialization."
+  fossil user password "$WEB_USERNAME" "$WEB_PASSWORD" -R "$ADMIN_REPO"
 fi
 
 INITIALIZED=false
@@ -129,18 +130,21 @@ for REPO in /data/fossils/*.fossil; do
     continue
   fi
 
-#   fossil login-group leave -R "$REPO"
+  fossil login-group leave -R "$REPO"
+  fossil sqlite3 -R "$REPO" "DELETE FROM config WHERE name LIKE 'login-group%';"
+  fossil sqlite3 -R "$REPO" "DELETE FROM config WHERE name LIKE 'peer-%';"
+
 
   REPO_NAME=$(basename "$REPO")
   fossil user password $WEB_USERNAME "$WEB_PASSWORD" -R "$REPO_NAME"
   echo "$REPO"
   if [ "$INITIALIZED" = false ]; then
     echo "Joining $REPO to new login group $LOGIN_GROUP"
-    fossil login-group join --name "$LOGIN_GROUP" -R "$REPO_NAME" "$ADMIN_REPO_NAME"
+    # fossil login-group join --name "$LOGIN_GROUP" -R "$REPO_NAME" "$ADMIN_REPO_NAME"
     INITIALIZED=true
   else
     echo "Joining repo to existing login group"
-    fossil login-group join -R "$REPO_NAME" "$ADMIN_REPO_NAME"
+    # fossil login-group join -R "$REPO_NAME" "$ADMIN_REPO_NAME"
   fi
 done
 
