@@ -126,6 +126,8 @@ for REPO in /data/fossils/*.fossil; do
     continue
   fi
 
+  fossil login-group leave -R "$REPO"
+
   REPO_NAME=$(basename "$REPO")
   fossil user password $WEB_USERNAME "$WEB_PASSWORD" -R "$REPO"
   echo "$REPO"
